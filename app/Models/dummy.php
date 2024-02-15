@@ -8,4 +8,6 @@ class dummy extends Model
 {
     protected $table = 'dummy';
     protected $fillable = ['time', 'CO2'];
+    protected $guarded = [];
+    public $timestamps = false;
 }

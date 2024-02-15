@@ -23,13 +23,25 @@ public function show($id)
 
 public function store(Request $request)
 {
-    // Create a new record
-    $dummy = Dummy::create($request->all());
-    return response()->json($dummy, 201);
+    
+
+    try {
+        // Your data creation logic
+        $dummy = Dummy::create($request->all());
+        return response()->json($dummy, 201);
+    } catch (\Exception $e) {
+        \Log::error('Error creating data: ' . $e->getMessage());
+        return response()->json(['error' => 'Internal Server Error'], 500);
+    }
 }
 
 public function update(Request $request, $id)
 {
+    $validatedData = $request->validate([
+        'time' => 'required',
+        'CO2' => 'required',
+    ]);
+
     // Update a record by ID
     $dummy = Dummy::findOrFail($id);
     $dummy->update($request->all());
