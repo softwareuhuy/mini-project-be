@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class dummy extends Model
 {
     protected $table = 'dummy';
-    // other model properties...
+    protected $fillable = ['time', 'CO2'];
 }
