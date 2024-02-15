@@ -23,7 +23,10 @@ public function show($id)
 
 public function store(Request $request)
 {
-    
+    $validatedData = $request->validate([
+        'time' => 'required',
+        'CO2' => 'required',
+    ]);
 
     try {
         // Your data creation logic
