@@ -20,8 +20,6 @@ use App\Http\Controllers\dummyController;
 Route::get('/tult_actual', [DataActualController::class, 'index']);
 
 Route::get('/dummy', [dummyController::class, 'index']);
-Route::POST('/dummy/{id}', [dummyController::class, 'store']);
-Route::get('/dummy/{id}', [dummyController::class, 'show']);
 
 Route::get('/data-actual', [ThingSpeakController::class, 'fetchDataFromThingSpeak']);
 Route::get('/', function () {
