@@ -27,15 +27,9 @@ public function store(Request $request)
         'time' => 'required',
         'CO2' => 'required',
     ]);
-
-    try {
-        // Your data creation logic
-        $dummy = Dummy::create($request->all());
-        return response()->json($dummy, 201);
-    } catch (\Exception $e) {
-        \Log::error('Error creating data: ' . $e->getMessage());
-        return response()->json(['error' => 'Internal Server Error'], 500);
-    }
+    $dummy = Dummy::create($request->all());
+    return response()->json($dummy, 201);
+    
 }
 
 public function update(Request $request, $id)
