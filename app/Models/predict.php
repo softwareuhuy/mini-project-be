@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class dummy extends Model
+class predict extends Model
 {
     protected $table = 'predict';
     protected $fillable = ['time', 'CO2'];
