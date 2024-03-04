@@ -46,8 +46,6 @@ Route::view('/tensor', 'tensorflow');
 Route::get('/tult_actual', [DataActualController::class, 'index']);
 
 Route::get('/dummy', [dummyController::class, 'index']);
-Route::get('/data-dummy', [apidummyController::class, 'index']);
-Route::get('/predict', [apipredictController::class, 'index']);
 
 Route::get('/data-actual', [ThingSpeakController::class, 'fetchDataFromThingSpeak']);
 Route::get('/', function () {

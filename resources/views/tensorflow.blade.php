@@ -11,12 +11,13 @@
     <h1>TensorFlow.js example</h1>
     <h2>Open the console to see the results.</h2>
     <script>
-        async function loadModel() {
-        // Load the TensorFlow.js model
-        const modelPath = "{{ asset('/ml-model/model.json') }}";
-        const model = await tf.loadLayersModel(modelPath);
-
+        
+      async function loadModel() {
         try {
+          // Load the TensorFlow.js model
+          const modelPath = "{{ asset('/ml-model/model.json') }}";
+          const model = await tf.loadLayersModel(modelPath);
+
           // Fetch data from the API
           const apiUrl = "/data-actual"; // Replace with your actual API endpoint
           const response = await fetch(apiUrl);
@@ -69,10 +70,43 @@
 
           // Log the predicted values
           console.log('Predicted Values:', predictedValues);
+
+          // Continue with the rest of your code
+          
+          // Fetch data from the actual data API
+          const newApiUrl = "/data-actual"; // Replace with your actual data-actual API endpoint
+          const actualDataResponse = await fetch(newApiUrl);
+          const actualData = await actualDataResponse.json();
+
+          // Extract the latest timestamp from the actual data
+          const latestTimestamp = new Date(actualData.feeds[0].created_at);
+          const newTimestamp = new Date(latestTimestamp.getTime() + 2 * 60000); // Add 2 minutes
+
+          // Prepare the data for the POST request to the "/predict" endpoint
+          const postData = {
+            timestamp: newTimestamp.toISOString(), // Convert to ISO string format
+            predictions: flattenedDenormalizedPredictions
+          };
+
+          // Send a POST request to the "/predict" endpoint
+          const predictApiUrl = "/predict"; // Replace with your actual predict API endpoint
+          const predictApiResponse = await fetch(predictApiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData),
+          });
+
+          // Check the response status
+          if (predictApiResponse.ok) {
+            console.log('Predictions successfully sent to the server.');
+          } else {
+            console.error('Failed to send predictions to the server.');
+          }
         } catch (error) {
           console.error('Error loading or using the model:', error);
         }
-      // console.log(model.summary())
       }
 
       // Call the function to load and use the model
