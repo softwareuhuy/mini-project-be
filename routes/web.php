@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ThingSpeakController;
 use App\Http\Controllers\DataActualController;
 use App\Http\Controllers\dummyController;
+use App\Http\Controllers\TensorFlowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,29 @@ use App\Http\Controllers\dummyController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// routes/web.php
+
+//model
+// Route::get('/tensorflow-model', 'App\Http\Controllers\TensorFlowController@serveModel');
+// Route::get('/tensorflow-weight', 'App\Http\Controllers\TensorFlowController@serveWeight');
+
+// Route::get('/ml-model/{file}', function ($file) {
+    // $path = public_path("ml-model/{$file}");
+    // return response()->file($path);
+// });
+
+// Route::get('/tensorflow', [TensorFlowController::class, 'servejson']);
+// Route::get('/group1-shard1of1.bin', [TensorFlowController::class, 'servebin']);
+// Route::get('/model', function () {
+//     return response()->file('ml-model/model.json');
+// });
+// Route::get('/group1-shard1of1.bin ', function () {
+//     return response()->file('ml-model/group1-shard1of1.bin');
+// });
+
+Route::view('/tensor', 'tensorflow');
+
 
 
 Route::get('/tult_actual', [DataActualController::class, 'index']);
