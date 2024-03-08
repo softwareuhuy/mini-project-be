@@ -2,43 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class TensorFlowController extends Controller
 {
-    public function servejson()
+    public function carbon()
     {
-        // Load TensorFlow.js model
-        $modelPath = public_path('/ml-model/model.json');
-        $model = file_get_contents($modelPath);
+        $apiKey = 'H9YOBU6TX7SPR2SX';
+        $channelId = '2025779';
+        $apiUrl = "https://api.thingspeak.com/channels/$channelId/feeds.json?api_key=$apiKey";
+        
+    
+        $response = Http::get($apiUrl);
+        $data = $response->json();
 
-        // Pass the model to the Blade view
-        return response($model)->header('Content-Type', 'application/json');
-    }
-    public function servebin()
-{
-    // Replace 'path/to/your/model.bin' with the actual path to your .bin file
-    $binFilePath = public_path('/ml-model/group1-shard1of1.bin');
+        // Get the timestamp from the API response
+        $timestamp = $data['feeds'][0]['created_at'];
+        $LatestTimeStamp = Carbon::parse($timestamp)->format('Y-m-d H:i:s');
 
-    // Check if the file exists
-    if (file_exists($binFilePath)) {
-        // Get the file content
-        $binFileContent = file_get_contents($binFilePath);
 
-        // Set the headers for binary file
-        $headers = [
-            'Content-Type' => 'application/octet-stream',
-            'Content-Disposition' => 'attachment; filename="group1-shard1of1.bin"',
-        ];
+        // Your Carbon logic here
+        for ($i = 0; $i < 21; $i++) {
+        // Add 2 minutes for each iteration
+        $newTimestamp = Carbon::parse($LatestTimeStamp)->addMinutes(($i + 1) * 2)->format('Y-m-d H:i:s');
+        // Format the timestamp to ISO8601
+        $predictTimestamp[] = Carbon::parse($newTimestamp)->format('Y-m-d H:i:00');
+        }
 
-        // Return the file as a response with headers
-        return response($binFileContent, 200, $headers);
-    }
-
-    // If the file doesn't exist, return a 404 response
-    abort(404, 'File not found');
-}
+        // Pass data to the view
+        return view('tensorflow', [
+            'LatestTimeStamp' => $LatestTimeStamp,
+            'data' => $data,
+            'predictTimestamp' => $predictTimestamp
+        ]);
+    }   
 }
