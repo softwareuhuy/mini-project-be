@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class LogTime extends Command
 {
@@ -11,8 +13,7 @@ class LogTime extends Command
 
     public function handle()
     {
-        $currentTime = now()->toDateTimeString();
-        \Log::info('Current time: ' . $currentTime); // Note the use of \Log here
-        $this->info('Current time: ' . $currentTime);
+        $currentTime = Carbon::now('Asia/Jakarta')->toDateTimeString();
+        echo 'Current time: ' . $currentTime . PHP_EOL;
     }
 }

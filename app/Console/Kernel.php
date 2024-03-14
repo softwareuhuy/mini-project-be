@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('SNI:time')->everyTwoSeconds()->appendOutputTo(storage_path('logs/SNI.log'));;
+    $schedule->command('SNI:time')->cron('1-59/2 * * * * ')->withoutOverlapping()->appendOutputTo(storage_path('logs/SNI.log'));
     }
 
     /**
