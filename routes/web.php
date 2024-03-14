@@ -51,3 +51,6 @@ Route::get('/data-actual', [ThingSpeakController::class, 'fetchDataFromThingSpea
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/tensorflow', function () {
+    return view('tensorflow.index');
+});

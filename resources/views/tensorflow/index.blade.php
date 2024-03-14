@@ -9,14 +9,11 @@
     <h1>TensorFlow.js Model Deployment</h1>
 
     {{-- Include TensorFlow.js library --}}
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="{{ asset('js/predict.js') }}"></script>
 
     {{-- Load the TensorFlow.js model --}}
     <script>
-        async function loadModel() {
-        const model = await tf.loadLayersModel('/tensorflow',false);
-        // Use the loaded model for inference
-    }
+       
     </script>
 </body>
 </html>
