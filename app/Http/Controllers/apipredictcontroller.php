@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\predict;
+use Illuminate\Validation\Rule;
 
-class apipredictController extends Controller
+
+class apipredictcontroller extends Controller
 {
     public function index()
 {
@@ -23,12 +25,19 @@ public function show($id)
 
 public function store(Request $request)
 {
-    $validatedData = $request->validate([
-        'time' => 'required',
-        'CO2' => 'required',
-    ]);
-    $predict = predict::create($request->all());
-    return response()->json($predict, 201);
+     $validatedData = $request->validate([
+            'time' => ['required', Rule::unique('predict', 'time')],
+            'CO2' => 'required',
+        ]);
+
+        // Find an existing record or create a new one based on the timestamp
+        $predict = predict::updateOrCreate(
+            ['time' => $request->input('time')],
+            ['CO2' => $request->input('CO2')]
+        );
+
+        return response()->json($predict, 201);
+    
     
 }
 

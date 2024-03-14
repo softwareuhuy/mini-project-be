@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('predict', function (Blueprint $table) {
             $table->id();
             $table->datetime('time');
-            $table->integer('CO2');
+            $table->float('CO2');
         });
     }
 

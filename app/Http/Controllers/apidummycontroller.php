@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\dummy;
 
-class apidummyController extends Controller
+class apidummycontroller extends Controller
 {
     public function index()
 {

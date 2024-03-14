@@ -39,7 +39,7 @@ use App\Http\Controllers\apipredictController;
 //     return response()->file('ml-model/group1-shard1of1.bin');
 // });
 
-Route::view('/tensor', 'tensorflow');
+Route::get('/tensor','App\Http\Controllers\TensorFlowController@carbon');
 
 
 
