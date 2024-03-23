@@ -14,12 +14,15 @@ class apidummycontroller extends Controller
     return response()->json($dummies);
 }
 
-public function show($id)
+public function show($count)
 {
-    // Fetch a single record by ID
-    $dummy = Dummy::find($id);
-    return response()->json($dummy);
+    // Fetch the latest $count records
+    $latestData = Dummy::orderBy('time', 'desc')->take($count)->get();
+    return response()->json($latestData);
 }
+
+
+
 
 public function store(Request $request)
 {

@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Jobs\TensorFlowJob;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,6 +14,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
     $schedule->command('SNI:time')->cron('1-59/2 * * * * ')->withoutOverlapping()->appendOutputTo(storage_path('logs/SNI.log'));
+    // $schedule->command('tensorflow:run')->everySecond();
+    $schedule->job(new TensorFlowJob())->everyMinute();
     }
 
     /**

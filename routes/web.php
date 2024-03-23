@@ -7,6 +7,7 @@ use App\Http\Controllers\dummyController;
 use App\Http\Controllers\TensorFlowController;
 use App\Http\Controllers\apidummyController;
 use App\Http\Controllers\apipredictController;
+use App\Http\Controllers\TensorFlowModelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,10 +26,10 @@ use App\Http\Controllers\apipredictController;
 // Route::get('/tensorflow-model', 'App\Http\Controllers\TensorFlowController@serveModel');
 // Route::get('/tensorflow-weight', 'App\Http\Controllers\TensorFlowController@serveWeight');
 
-// Route::get('/ml-model/{file}', function ($file) {
-    // $path = public_path("ml-model/{$file}");
-    // return response()->file($path);
-// });
+Route::get('/ml-model/{file}', function ($file) {
+    $path = public_path("ml-model/{$file}");
+    return response()->file($path);
+});
 
 // Route::get('/tensorflow', [TensorFlowController::class, 'servejson']);
 // Route::get('/group1-shard1of1.bin', [TensorFlowController::class, 'servebin']);
@@ -39,7 +40,15 @@ use App\Http\Controllers\apipredictController;
 //     return response()->file('ml-model/group1-shard1of1.bin');
 // });
 
-Route::get('/tensor','App\Http\Controllers\TensorFlowController@carbon');
+// Route::get('/tensor','App\Http\Controllers\TensorFlowController@carbon');
+
+Route::get('/tensor', function () {
+    return view('tensorflow');
+});
+
+Route::get('/test', function () {
+    return view('test');
+});
 
 
 
@@ -54,3 +63,4 @@ Route::get('/', function () {
 Route::get('/tensorflow', function () {
     return view('tensorflow.index');
 });
+Route::get('/servejson', [TensorFlowModelController::class, 'servejson']);

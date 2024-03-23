@@ -23,16 +23,17 @@
           const model = await tf.loadLayersModel(modelPath);
 
           // Fetch data from the API
-          const apiUrl = "/data-actual"; // Replace with your actual API endpoint
+          const apiUrl = "/api/dummy/10"; // replace with your actual api endpoint
           const response = await fetch(apiUrl);
           const data = await response.json();
 
           // Extract the relevant feature (field5/CO2) from the API data
-          const inputFeature = data.feeds.map(entry => parseFloat(entry.field5));
+          const inputFeature = data.map(entry => parseFloat(entry.CO2));
+          console.log("Number of field5 entries fetched:", inputFeature.length);
 
           // Organize the data into sequences of three for each prediction
           const sequences = [];
-          for (let i = 0; i < 21; i++) {
+          for (let i = 0; i < 5; i++) {
             sequences.push([
               inputFeature[i],
               inputFeature[i + 1],
@@ -53,8 +54,8 @@
           const predictedValues = predictions.arraySync();
 
           // Extract min and max CO2 values from the API data
-          const minCO2 = Math.min(...data.feeds.map(entry => parseFloat(entry.field5)));
-          const maxCO2 = Math.max(...data.feeds.map(entry => parseFloat(entry.field5)));
+          const minCO2 = Math.min(...data.map(entry => parseFloat(entry.CO2)));
+          const maxCO2 = Math.max(...data.map(entry => parseFloat(entry.CO2)));
 
           // Function to denormalize a single value
           function denormalizeValue(value) {
@@ -76,35 +77,52 @@
           console.log('Predicted Values:', predictedValues);
     
 
-          const predictTimestamp = @json($predictTimestamp);
-          console.log(predictTimestamp[2])
-    // Loop through the denormalized predictions and send data
-    for (let i = 0; i < flattenedDenormalizedPredictions.length; i++) {
-    const postData = {
-      time: `${predictTimestamp[i]}`, // Use the Carbon-formatted timestamp
-      CO2: `${flattenedDenormalizedPredictions[i]}`
-    };
-    console.log(postData);
+          const predictTimestamp = [];
+          let latestDate = new Date(); // Initialize latestDate as a Date object
+          latestDate.setHours(0, 0, 0);
+          latestDate.setHours(latestDate.getHours() - 8);
 
-    // Send a POST request to the "/predict" endpoint
-    const predictApiUrl = "/api/predict"; // Replace with your actual predict API endpoint
-    const predictApiResponse = fetch(predictApiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(postData),
-    });
-    }
-          // Check the response status
-          if (predictApiResponse.ok) {
-            console.log('Predictions successfully sent to the server.');
-          } else {
-            console.error('Failed to send predictions to the server.');
+          for (let i = 0; i < 5; i++) {
+                  latestDate.setHours(latestDate.getHours() + 8);
+
+          
+              // Format the timestamp as "yyyy-mm-dd hh:mm:ss"
+              const formattedTimestamp = `${latestDate.getFullYear()}-${String(latestDate.getMonth() + 1).padStart(2, '0')}-${String(latestDate.getDate()).padStart(2, '0')} ${String(latestDate.getHours()).padStart(2, '0')}:00:00`;
+              predictTimestamp.push(formattedTimestamp);
           }
-        } catch (error) {
+        
+          console.log(predictTimestamp[2])
+          // Loop through the denormalized predictions and send data
+          for (let i = 0; i < flattenedDenormalizedPredictions.length; i++) {
+          const postData = {
+            time: `${predictTimestamp[i]}`, // Use the Carbon-formatted timestamp
+            CO2: `${flattenedDenormalizedPredictions[i]}`
+          };
+          console.log(postData);
+        
+          // Send a POST request to the "/predict" endpoint
+          const predictApiUrl = "/api/predict"; // Replace with your actual predict API endpoint
+          const predictApiResponse = fetch(predictApiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData),
+          });
+          }
+                // Check the response status
+          if (predictApiResponse.ok) 
+            {
+            console.log('Predictions successfully sent to the server.');
+            } 
+          else 
+            {
+            console.error('Failed to send predictions to the server.');
+            }
+          } 
+          catch (error) {
           console.error('Error loading or using the model:', error);
-        }
+          }
       }
     
       // Call the function to load and use the model

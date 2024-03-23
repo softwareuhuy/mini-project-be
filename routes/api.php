@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::apiResource('dummy',apidummycontroller::class);
 Route::apiResource('predict',apipredictcontroller::class);
+Route::put('predict', [apipredictcontroller::class, 'update']);
 // Route::post('/dummy',[apidummycontroller::class,'store']);

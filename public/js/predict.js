@@ -1,15 +1,18 @@
-import * as tf from '@tensorflow/tfjs-node-gpu'
+import * as tf from '@tensorflow/tfjs-node'
+// import * from '/predict.js'
+
+// Your TensorFlow.js code here
 
 async function loadModel() {
     let flattenedDenormalizedPredictions;
     let predictTimestamp;
     try {
         // Load the TensorFlow.js model
-        const modelPath = "/ml-model/model.json"; // Path to your TensorFlow.js model
+        const modelPath = 'file://public/ml-model/model.json'; // Path to your TensorFlow.js model
         const model = await tf.loadLayersModel(modelPath);
 
         // Fetch data from the API
-        const apiUrl = "/data-actual"; // Replace with your actual API endpoint
+        const apiUrl = "/data-actual?limit=10"; // Replace with your actual API endpoint
         const response = await fetch(apiUrl);
         const data = await response.json();
 
@@ -66,18 +69,15 @@ async function loadModel() {
         let latestDate = new Date(); // Initialize latestDate as a Date object
         latestDate.setHours(0, 0, 0);
         latestDate.setHours(latestDate.getHours() - 8);
-                
+
         for (let i = 0; i < 21; i++) {
                 latestDate.setHours(latestDate.getHours() + 8);
-            
+
         
             // Format the timestamp as "yyyy-mm-dd hh:mm:ss"
             const formattedTimestamp = `${latestDate.getFullYear()}-${String(latestDate.getMonth() + 1).padStart(2, '0')}-${String(latestDate.getDate()).padStart(2, '0')} ${String(latestDate.getHours()).padStart(2, '0')}:00:00`;
             predictTimestamp.push(formattedTimestamp);
         }
-        
-
-
         
         console.log(predictTimestamp[2])
 

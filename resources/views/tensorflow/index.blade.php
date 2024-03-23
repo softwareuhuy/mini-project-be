@@ -9,7 +9,7 @@
     <h1>TensorFlow.js Model Deployment</h1>
 
     {{-- Include TensorFlow.js library --}}
-    <script src="{{ asset('js/predict.js') }}"></script>
+    <script src="{{ asset('js/predict.mjs') }}"></script>
 
     {{-- Load the TensorFlow.js model --}}
     <script>

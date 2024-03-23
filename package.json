@@ -12,6 +12,8 @@
     },
     "dependencies": {
         "@tensorflow/tfjs": "^4.17.0",
+        "@tensorflow/tfjs-backend-cpu": "^4.17.0",
+        "@tensorflow/tfjs-node": "^3.1.0",
         "laravel-mix": "^6.0.49"
     }
 }

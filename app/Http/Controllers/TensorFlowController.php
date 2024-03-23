@@ -11,16 +11,17 @@ class TensorFlowController extends Controller
 {
     public function carbon()
     {
-        $apiKey = 'H9YOBU6TX7SPR2SX';
-        $channelId = '2025779';
-        $apiUrl = "https://api.thingspeak.com/channels/$channelId/feeds.json?api_key=$apiKey";
+        // $apiKey = 'H9YOBU6TX7SPR2SX';
+        // $channelId = '2025779';
+        // $apiUrl = "https://api.thingspeak.com/channels/$channelId/feeds.json?api_key=$apiKey";
         
     
-        $response = Http::get($apiUrl);
-        $data = $response->json();
+        // $response = Http::get($apiUrl);
+        // $data = $response->json();
 
         // Get the timestamp from the API response
-        $timestamp = $data['feeds'][0]['created_at'];
+        // $timestamp = $data['feeds'][0]['created_at'];
+        $timestamp = now();
         $LatestTimeStamp = Carbon::parse($timestamp)->format('Y-m-d H:i:s');
 
 
@@ -35,7 +36,7 @@ class TensorFlowController extends Controller
         // Pass data to the view
         return view('tensorflow', [
             'LatestTimeStamp' => $LatestTimeStamp,
-            'data' => $data,
+            // 'data' => $data,
             'predictTimestamp' => $predictTimestamp
         ]);
     }   
